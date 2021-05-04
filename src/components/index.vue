@@ -4,8 +4,11 @@
       <div class="start_game">Rock Paper Scissors Game</div>
     <br>
     <p>Pool Balance: {{this.balance}} ETH</p>
-    <label>Please input the amount <input id="betAmount" type="number" v-model="betAmount"> Gwei</label>
-      <div class="group" v-if="stage == 0">
+
+    <p style="font-weight: 600" v-if="userBalance == 0">Loading your balance !!!</p>
+
+    <label v-if="userBalance != 0">Please input the amount <input id="betAmount" type="number" v-model="betAmount"> Gwei</label>
+      <div class="group" v-if="stage == 0 && userBalance != 0">
         <div id="rock" @click="gameStart(0)">Rock</div>
         <div id="paper" @click="gameStart(1)">Paper</div>
         <div id="scissors" @click="gameStart(2)">Scissors</div>
@@ -20,11 +23,11 @@
       <p>{{detail}}</p>
     </div>
 
-    <div class="endOfResult" v-if="winner >=1 && winner <=3">
+    <div class="endOfResult" v-if="winner >=1 && winner <=3 && stage == 4">
       <p v-if="winner == 3">No winner.</p>
       <p v-if="winner == 2">You Lose.</p>
       <p v-if="winner == 1">You Win.</p>
-      <p @click="restart">Restart</p>
+      <button @click="restart">Restart</button>
     </div>
 
   </div>
@@ -77,6 +80,9 @@ export default {
 
     },
     gameStart : async function(select) {
+      if (this.userBalance == 0) {
+        alert("Please connect metamask or transfer eth to this account")
+      }
       this.stage = 0
       this.winner = null
       if (this.betAmount > this.userBalance ) {
