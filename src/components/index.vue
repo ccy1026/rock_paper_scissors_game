@@ -227,6 +227,7 @@ a {
   max-width: 1400px;
   padding: 0 20px;
   gap: 30px;
+  margin: 0 auto;
 }
 .group > div {
   flex: 1 0 calc(33% - 30px);
