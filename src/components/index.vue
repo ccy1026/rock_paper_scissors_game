@@ -33,6 +33,7 @@
 <script>
 
 var ethers = require('ethers');
+const { ethereum } = window;
 import NodeInfo from '../utils/const'
 import {initMetaMask, playGame, whoWin,getRandomResult, checkWinner} from '../utils/web3';
 export default {
@@ -46,6 +47,7 @@ export default {
             type : ""
           },
           balance : 0,
+          userBalance : 0,
           betAmount : 10,
           stepsDone : 0,
           totalSteps : 100,
@@ -68,9 +70,19 @@ export default {
       var provider = ethers.providers.getDefaultProvider('rinkeby')
       await provider.getBalance(NodeInfo.contractAddress).then(res => this.balance = ethers.BigNumber.from(res._hex) / 1000000000000000000)
     },
+    getUserBalance : async function() {
+      let accounts = await ethereum.request({ method: 'eth_requestAccounts' });
+      var provider = ethers.providers.getDefaultProvider('rinkeby')
+      await provider.getBalance(accounts[0]).then(res => this.userBalance = ethers.BigNumber.from(res._hex) / 1)
+
+    },
     gameStart : async function(select) {
       this.stage = 0
       this.winner = null
+      if (this.betAmount > this.userBalance ) {
+        alert("Not Enough Money")
+        return false
+      }
       let err = await playGame(select, this.betAmount);
       if  ((err["code"] == 4001) || (String(err).includes("revert") || (String(err).includes("Need to wait Random Number")))) {
           this.gameStart(select)
@@ -187,6 +199,9 @@ export default {
             console.log('Handle rejected promise ('+res+') here.');
           });
         }
+    },
+    balance : function() {
+     this.getUserBalance()
     }
   }
 }

@@ -62,7 +62,7 @@ export async function playGame(select,amount){
         let requestParams = {
             from: account,
             to: "0x75FE2EB72A9a10FA592ab295b719af3A824c4062",
-            data: "0xe5ed1d590000000000000000000000000000000000000000000000000000000000000002",
+            data: "0xe5ed1d590000000000000000000000000000000000000000000000000000000000000002",  //function bytecode
             value: web3.utils.toWei((amount).toString(), "gwei"),
             gasLimit: web3.utils.toHex(300000),
             gasPrice: web3.utils.toHex(1000000000),
@@ -96,8 +96,8 @@ export async function checkWinner(){
 
         let requestParams = {
             from: account,
-            to: "0x75FE2EB72A9a10FA592ab295b719af3A824c4062",
-            data : "0xa2f3d16e",
+            to: contractAddress,
+            data : "0xa2f3d16e", // function bytecode
             gasLimit: web3.utils.toHex(300000),
             gasPrice: web3.utils.toHex(1000000000),
             gas: "",//gas limit
