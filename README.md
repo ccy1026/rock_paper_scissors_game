@@ -1,4 +1,5 @@
 # tech_test
+Use Rinkeby to TEST
 
 Rock Paper Scissors Game
 
